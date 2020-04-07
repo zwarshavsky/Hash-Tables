@@ -7,12 +7,13 @@ class LinkedPair:
         self.value = value
         self.next = None
 
+
 class HashTable:
     '''
     A hash table that with `capacity` buckets
     that accepts string keys
     '''
-    def __init__(self, capacity):
+    def __init__(self, capacity): 
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
 
@@ -20,7 +21,7 @@ class HashTable:
     def _hash(self, key):
         '''
         Hash an arbitrary key and return an integer.
-
+        
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
         return hash(key)
@@ -44,6 +45,12 @@ class HashTable:
 
 
     def insert(self, key, value):
+        # if len(self.storage) >= self.capacity:
+        #     self.resize()
+        print(self._hash(key))
+        hash_mod_key = self._hash_mod(key)
+        # print(hash_mod_key)
+        self.storage[hash_mod_key] = (key,value) 
         '''
         Store the value with the given key.
 
@@ -54,7 +61,6 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
 
 
 
@@ -66,7 +72,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hash_mod_key = self._hash_mod(key)
+        if self.storage[hash_mod_key]:
+            print(key," was found and removed")
+            self.storage[hash_mod_key] = None
+        else:
+            print(key," was not found")
+        
 
 
     def retrieve(self, key):
@@ -77,7 +89,8 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hash_mod_key = self._hash_mod(key)
+        return self.storage[hash_mod_key]
 
 
     def resize(self):
@@ -87,34 +100,41 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        return self.capacity * 2
 
 
 
 if __name__ == "__main__":
     ht = HashTable(2)
-
     ht.insert("line_1", "Tiny hash table")
+    # print(ht.storage)
     ht.insert("line_2", "Filled beyond capacity")
+    # print(ht.storage)
     ht.insert("line_3", "Linked list saves the day!")
+    # print(ht.storage)
+    # print(len(ht.storage))
 
     print("")
 
-    # Test storing beyond capacity
+    # # Test storing beyond capacity
     print(ht.retrieve("line_1"))
     print(ht.retrieve("line_2"))
     print(ht.retrieve("line_3"))
 
-    # Test resizing
-    old_capacity = len(ht.storage)
-    ht.resize()
-    new_capacity = len(ht.storage)
+    ## Test remove
+    ht.remove("line_1")
+    # print(ht.retrieve("line_1"))
 
-    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+    # # Test resizing
+    # old_capacity = len(ht.storage)
+    # ht.resize()
+    # new_capacity = len(ht.storage)
 
-    # Test if data intact after resizing
-    print(ht.retrieve("line_1"))
-    print(ht.retrieve("line_2"))
-    print(ht.retrieve("line_3"))
+    # print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
-    print("")
+    # # Test if data intact after resizing
+    # print(ht.retrieve("line_1"))
+    # print(ht.retrieve("line_2"))
+    # print(ht.retrieve("line_3"))
+
+    # print("")
